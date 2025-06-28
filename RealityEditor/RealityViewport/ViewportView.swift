@@ -14,6 +14,17 @@ struct ViewportView: View {
     var body: some View {
         RealityView { content in
             // MARK: - Initial Setup (One-Time)
+            
+            // Setup camera entity
+            let cameraEntity = PerspectiveCamera()
+            cameraEntity.camera.fieldOfViewInDegrees = 50
+            if let activeCamera = sceneManager.activeCamera {
+                cameraEntity.position = activeCamera.position
+                cameraEntity.look(at: [0, 0, 0], from: cameraEntity.position, relativeTo: nil)
+            }
+            content.add(cameraEntity)
+            
+            // Grid setup
             let gridSize: Float = 20
             let gridSpacing: Float = 1
             let lineCount = Int(gridSize / gridSpacing)
@@ -23,7 +34,7 @@ struct ViewportView: View {
             gridMaterial.metallic = .float(0)
             gridMaterial.roughness = .float(1)
             
-            // Create proper grid lines using cylinders
+            // Create grid lines using thin cylinders
             for i in -lineCount...lineCount {
                 let offset = Float(i) * gridSpacing
                 
@@ -88,10 +99,22 @@ struct ViewportView: View {
             
         } update: { content in
             // MARK: - Frame Updates
-            content.entities.removeAll {
-                !($0.name.hasPrefix("grid_") || $0.name == "ambient_light")
+            
+            // Update camera position
+            if let camera = content.entities.first(where: { $0 is PerspectiveCamera }) as? PerspectiveCamera,
+               let activeCamera = sceneManager.activeCamera {
+                camera.position = activeCamera.position
+                camera.look(at: [0, 0, 0], from: camera.position, relativeTo: nil)
             }
             
+            // Remove only scene objects (keep grid, camera, and ambient light)
+            content.entities.removeAll {
+                !($0.name.hasPrefix("grid_") ||
+                  $0.name == "ambient_light" ||
+                  $0 is PerspectiveCamera)
+            }
+            
+            // Add lights from scene
             for lightNode in sceneManager.lightNodes {
                 if let light = lightNode.createRealityKitLight() {
                     light.position = lightNode.position
@@ -101,6 +124,7 @@ struct ViewportView: View {
                 }
             }
             
+            // Add models
             for modelNode in sceneManager.modelNodes {
                 if let entity = modelNode.modelEntity {
                     let clone = entity.clone(recursive: true)
@@ -110,49 +134,48 @@ struct ViewportView: View {
                     clone.name = "model_\(modelNode.id.uuidString)"
                     
                     // Add selection highlight
-                    if sceneManager.selectedNode?.id == modelNode.id,
-                       let modelEntity = clone as? ModelEntity,
-                       let model = modelEntity.model {
-                        
-                        var highlightedMaterials: [RealityKit.Material] = []
-                        
-                        for material in model.materials {
-                            if var simpleMaterial = material as? SimpleMaterial {
-                                // Tint blue for selection
-                                #if os(macOS)
-                                let currentColor = simpleMaterial.color.tint
-                                var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-                                currentColor.getRed(&r, green: &g, blue: &b, alpha: &a)
-                                simpleMaterial.color = .init(tint: NSColor(
-                                    red: r * 0.7,
-                                    green: g * 0.7,
-                                    blue: min(b * 0.7 + 0.3, 1.0),
-                                    alpha: a
-                                ))
-                                #else
-                                simpleMaterial.color = .init(tint: .systemBlue.withAlphaComponent(0.8))
-                                #endif
-                                highlightedMaterials.append(simpleMaterial)
-                            } else {
-                                highlightedMaterials.append(material)
-                            }
-                        }
-                        
-                        modelEntity.model?.materials = highlightedMaterials
+                    if sceneManager.selectedNode?.id == modelNode.id {
+                        highlightEntity(clone)
                     }
                     
                     content.add(clone)
                 }
-            }
-            
-            if let activeCamera = sceneManager.activeCamera {
-                cameraController.syncWithCamera(activeCamera)
             }
         }
         .gesture(cameraControlGestures())
         .onTapGesture {
             sceneManager.deselectNode()
         }
+    }
+    
+    // MARK: - Selection Highlighting
+    private func highlightEntity(_ entity: Entity) {
+        guard let modelEntity = entity as? ModelEntity,
+              let model = modelEntity.model else { return }
+        
+        var highlightedMaterials: [RealityKit.Material] = []
+        
+        for material in model.materials {
+            if var simpleMaterial = material as? SimpleMaterial {
+                // Tint blue for selection
+                #if os(macOS)
+                let currentColor = simpleMaterial.color.tint
+                var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+                currentColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+                simpleMaterial.color = .init(tint: NSColor(
+                    red: r * 0.7,
+                    green: g * 0.7,
+                    blue: min(b * 0.7 + 0.3, 1.0),
+                    alpha: a
+                ))
+                #endif
+                highlightedMaterials.append(simpleMaterial)
+            } else {
+                highlightedMaterials.append(material)
+            }
+        }
+        
+        modelEntity.model?.materials = highlightedMaterials
     }
     
     // MARK: - Gesture Handling
