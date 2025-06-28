@@ -1,4 +1,8 @@
-// App/ContentView.swift
+//
+//  ContentView.swift
+//  RealityEditor
+//
+
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -6,32 +10,25 @@ struct ContentView: View {
     @StateObject private var sceneManager = SceneManager()
     @State private var isShowingFilePicker = false
     @State private var showInspector = true
-    
+
     var body: some View {
         NavigationView {
             HStack(spacing: 0) {
                 // Main Viewport
                 VStack {
-                    // Viewport
                     ViewportView(sceneManager: sceneManager)
-                    
-                    // Toolbar
                     viewportToolbar()
                 }
-                
+
                 // Inspector Panel
                 if showInspector {
                     InspectorView(sceneManager: sceneManager)
                 }
             }
-            .navigationTitle("RealityViewport")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(showInspector ? "Hide Inspector" : "Show Inspector") {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showInspector.toggle()
-                        }
+                Button(showInspector ? "Hide Inspector" : "Show Inspector") {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showInspector.toggle()
                     }
                 }
             }
@@ -46,22 +43,19 @@ struct ContentView: View {
                 handleFileSelection(result)
             }
         }
-        .navigationViewStyle(.stack) // Prevents sidebar on iPad
     }
-    
+
     // MARK: - Viewport Toolbar
     private func viewportToolbar() -> some View {
         HStack {
-            // Import button
             Button("Import USDZ") {
                 isShowingFilePicker = true
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.regular)
-            
+
             Spacer()
-            
-            // Selection actions
+
             if let selectedNode = sceneManager.selectedNode {
                 Button("Delete \(selectedNode.name)") {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -72,23 +66,22 @@ struct ContentView: View {
                 .foregroundColor(.red)
                 .controlSize(.regular)
             }
-            
-            // View controls
+
             if let activeCamera = sceneManager.activeCamera {
                 Menu("View") {
                     Button("Frame All") {
                         // TODO: Implement frame all
                     }
-                    
+
                     Button("Frame Selected") {
                         if let selectedNode = sceneManager.selectedNode {
                             // TODO: Implement frame selected
                         }
                     }
                     .disabled(sceneManager.selectedNode == nil)
-                    
+
                     Divider()
-                    
+
                     Button("Reset View") {
                         // TODO: Implement reset view
                     }
@@ -98,9 +91,9 @@ struct ContentView: View {
             }
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(.gray.opacity(0.1)) // macOS-compatible background
     }
-    
+
     // MARK: - File Handling
     private func handleFileSelection(_ result: Result<[URL], Error>) {
         switch result {

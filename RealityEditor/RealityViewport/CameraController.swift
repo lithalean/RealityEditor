@@ -1,11 +1,3 @@
-//
-//  CameraController.swift
-//  RealityEditor
-//
-//  Created by Tyler Allen on 6/15/25.
-//
-
-
 // RealityViewport/CameraController.swift
 import Foundation
 import simd
@@ -19,9 +11,30 @@ class CameraController: ObservableObject {
     private var orbitAngleX: Float = 0.78  // Blender default horizontal angle
     private var orbitAngleY: Float = 0.65  // Blender default vertical angle
     
+    // State tracking to prevent feedback loops
+    private var isUpdatingFromCamera = false
+    
     enum ControlMode: String, CaseIterable {
         case orbit = "Orbit"
         case locked = "Locked"
+    }
+    
+    // MARK: - Sync with Camera Node
+    func syncWithCamera(_ camera: CameraNode) {
+        guard !isUpdatingFromCamera else { return }
+        
+        // Calculate orbit parameters from camera position
+        let toCamera = camera.position - orbitTarget
+        let distance = length(toCamera)
+        
+        if distance > 0.001 {
+            orbitRadius = distance
+            let normalized = normalize(toCamera)
+            
+            // Calculate angles from position
+            orbitAngleY = asin(normalized.y)
+            orbitAngleX = atan2(normalized.z, normalized.x)
+        }
     }
     
     // MARK: - Orbit Controls
@@ -46,7 +59,24 @@ class CameraController: ObservableObject {
         updateCameraFromOrbit(camera)
     }
     
+    func panCamera(_ camera: CameraNode, deltaX: Float, deltaY: Float) {
+        guard controlMode == .orbit else { return }
+        
+        // Calculate right and up vectors
+        let forward = normalize(orbitTarget - camera.position)
+        let right = normalize(cross(forward, [0, 1, 0]))
+        let up = normalize(cross(right, forward))
+        
+        // Pan the orbit target
+        let panSpeed = orbitRadius * 0.002
+        orbitTarget += right * deltaX * panSpeed - up * deltaY * panSpeed
+        
+        updateCameraFromOrbit(camera)
+    }
+    
     private func updateCameraFromOrbit(_ camera: CameraNode) {
+        isUpdatingFromCamera = true
+        
         // Convert spherical coordinates to cartesian
         let x = orbitRadius * cos(orbitAngleY) * cos(orbitAngleX)
         let y = orbitRadius * sin(orbitAngleY)
@@ -54,6 +84,8 @@ class CameraController: ObservableObject {
         
         camera.position = orbitTarget + [x, y, z]
         camera.lookAt(target: orbitTarget)
+        
+        isUpdatingFromCamera = false
     }
     
     // MARK: - Camera Utilities
@@ -65,7 +97,7 @@ class CameraController: ObservableObject {
         case .model:
             if let modelNode = node as? ModelNode {
                 let bounds = modelNode.bounds
-                let maxDimension = max(bounds.x, bounds.y, bounds.z)
+                let maxDimension = max(bounds.x, bounds.y, bounds.z) * max(modelNode.scale.x, modelNode.scale.y, modelNode.scale.z)
                 orbitRadius = maxDimension * 3.0
             } else {
                 orbitRadius = 5.0
@@ -86,8 +118,16 @@ class CameraController: ObservableObject {
         
         for node in nodes {
             let nodePos = node.position
-            minBounds = min(minBounds, nodePos)
-            maxBounds = max(maxBounds, nodePos)
+            
+            if let modelNode = node as? ModelNode {
+                // Include model bounds
+                let halfBounds = (modelNode.bounds * modelNode.scale) / 2
+                minBounds = min(minBounds, nodePos - halfBounds)
+                maxBounds = max(maxBounds, nodePos + halfBounds)
+            } else {
+                minBounds = min(minBounds, nodePos)
+                maxBounds = max(maxBounds, nodePos)
+            }
         }
         
         // Set orbit target to center of bounding box

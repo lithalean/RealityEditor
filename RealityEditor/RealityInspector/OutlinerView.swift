@@ -17,7 +17,7 @@ struct OutlinerView: View {
                 Label("Scene", systemImage: "globe")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .listRowBackground(Color(.systemGray5))
+                    .listRowBackground(Color.gray.opacity(0.15))
                 
                 // Camera nodes
                 ForEach(sceneManager.cameraNodes, id: \.id) { camera in

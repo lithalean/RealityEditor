@@ -8,244 +8,278 @@
 
 **RealityEditor** = RealityViewport + RealityInspector + Future Modules
 
-Starting small with the core scene editing experience, then gradually adding Godot's feature set as modular Apple-native components.
+Starting with core scene editing functionality, then gradually adding Godot-inspired features as modular Apple-native components.
 
 ---
 
-## 📋 Phase Overview
+## 📊 Current Project Status
 
-| Phase | Focus | Duration | Status |
-|-------|-------|----------|---------|
-| **Phase 1** | Foundation | 1 week | 🚧 **IN PROGRESS** |
-| **Phase 2** | Scene Management | 1 week | ⏳ Planned |
-| **Phase 3** | Transform System | 1 week | ⏳ Planned |
-| **Phase 4** | Inspector Features | 1 week | ⏳ Planned |
-| **Phase 5** | Modular Architecture | 1 week | ⏳ Planned |
+### ✅ Implemented Features
 
----
+**Project Structure**
+- macOS project with SwiftUI + RealityKit (Xcode 16, macOS 16)
+- Modular folder organization (Core, RealityViewport, RealityInspector, App)
+- Basic SwiftData integration
 
-## 🚧 Phase 1: Foundation (Week 1) - **IN PROGRESS**
+**Node System** 
+- SceneNode protocol with transform properties
+- BaseSceneNode implementation
+- Node types: Camera, Light, Model
+- Complete transform system (position, rotation, scale)
 
-### Objectives
-- ✅ Establish core project structure
-- ✅ Implement basic node system (Camera, Light, Model)
-- ✅ Create RealityViewport with 3D scene rendering
-- ✅ Build RealityInspector with outliner and properties
-- ✅ Basic camera controls and USDZ import
+**Viewport**
+- RealityView integration with modern API
+- 3D grid with colored axes (X=red, Y=green, Z=blue)
+- Camera controller with orbit controls
+- Grid rendering system
+- Model entity rendering
+- Light entity creation and rendering
+- Selection highlighting system
 
-### Day-by-Day Breakdown
+**Inspector**
+- InspectorView container
+- OutlinerView for scene hierarchy
+- PropertiesView for node properties
+- Node selection system
 
-#### ✅ Project Structure **COMPLETED**
-- [x] iOS project setup with SwiftUI + RealityKit
-- [x] Modular folder structure:
-  ```
-  RealityEditor/
-  ├── App/ (Main app files)
-  ├── Core/ (Node system, scene management)
-  ├── RealityViewport/ (3D viewport)
-  ├── RealityInspector/ (UI panels)
-  └── Shared/ (Extensions, utilities)
-  ```
-- [x] Dependencies and build configuration
+**Scene Management**
+- SceneManager with node collection
+- Default scene setup (Camera + Light at Blender positions)
+- Active camera tracking
+- Node addition/removal
+- Model import functionality
 
-#### ✅ Core Node System **COMPLETED**
-- [x] `SceneNode` protocol with transform properties
-- [x] `BaseSceneNode` implementation
-- [x] `CameraNode` with FOV, projection, view matrix
-- [x] `LightNode` with directional/point types, intensity
-- [x] `ModelNode` with USDZ loading capability
-- [x] Transform system (position, rotation, scale)
+### 🚧 In Progress
 
-#### ✅ Basic Viewport **COMPLETED**
-- [x] `ViewportView` with RealityView integration
-- [x] 3D grid system with colored axes (X=red, Y=green, Z=blue)
-- [x] `CameraController` with orbit controls
-- [x] Scene rendering (lights, models, grid)
-- [x] Basic gesture handling (orbit, zoom)
-
-#### ✅ Basic Inspector **COMPLETED**
-- [x] `OutlinerView` - Blender-style scene hierarchy
-- [x] `PropertiesView` - Node-specific property panels
-- [x] Node selection system with visual feedback
-- [x] Transform property display
-- [x] Camera/Light/Model specific properties
-- [x] Active camera indication
-
-#### ✅ Additional Features Implemented
-- [x] Default scene setup (Camera + Light, Blender positions)
-- [x] USDZ file import with file picker
-- [x] Auto-scaling imported models
-- [x] Node type icons and visual hierarchy
-- [x] Clean modular architecture
-- [x] Comprehensive property inspection
-
-### ✅ Phase 1 Deliverables **COMPLETED**
-- [x] **Working 3D viewport** with grid and orbit controls
-- [x] **Scene hierarchy** with 3 node types (Camera, Light, Model)
-- [x] **Inspector panels** showing node properties
-- [x] **USDZ import** functionality
-- [x] **Basic scene management** (add, remove, select nodes)
-- [x] **Default scene** that matches Blender's setup
-
-### 📊 Phase 1 Success Metrics - **ALL MET**
-- ✅ Can load app and see 3D viewport with grid
-- ✅ Can import USDZ models and see them rendered
-- ✅ Can select nodes in outliner and see properties
-- ✅ Can orbit camera around scene
-- ✅ Clean modular code structure ready for expansion
+- Camera zoom/pan controls (orbit works)
+- Property editing binding
+- Frame all/selected implementation
+- 3D object picking in viewport
+- Camera sync improvements
 
 ---
 
-## ⏳ Phase 2: Scene Management
+## 📋 Development Phases
 
-### Objectives
-- Enhanced node manipulation
-- Multiple model support
-- Better scene organization
-- Improved selection system
+### Phase 1: Foundation
+**Status**: ✅ **COMPLETED**
 
-### Key Features
-- Multi-selection support
-- Node duplication and deletion
-- Scene hierarchy management
+#### Completed Features
+- ✅ Project structure with modular architecture
+- ✅ Complete node system (Camera, Light, Model)
+- ✅ RealityViewport with grid and axes
+- ✅ Model loading and rendering pipeline
+- ✅ Light rendering system
+- ✅ Basic camera orbit controls
+- ✅ Selection highlighting
+- ✅ Inspector UI with outliner and properties
+- ✅ USDZ import functionality
+- ✅ Default scene setup matching Blender
+
+#### Known Issues to Address
+- Camera zoom needs gesture refinement
+- Pan controls not yet implemented
+- Property fields need two-way binding
+- 3D picking for viewport selection
+
+---
+
+### Phase 2: Scene Management
+**Status**: ⏳ Ready to Start
+
+#### Core Features
+- Multi-selection system
+- Node duplication
+- Advanced deletion (with children)
+- Parent/unparent operations
 - Focus/frame operations
-- Scene save/load basics
+- Basic scene persistence
+
+#### Success Criteria
+- Can select multiple nodes
+- Can duplicate nodes with offset
+- Can save/load scenes
+- Frame selected works properly
+- Smooth performance with 50+ nodes
 
 ---
 
-## ⏳ Phase 3: Transform System
+### Phase 3: Transform Tools
+**Status**: ⏳ Planned
 
-### Objectives
-- Interactive 3D gizmos
-- Direct object manipulation
-- Precision transform controls
-
-### Key Features
-- Visual transform gizmos (translate, rotate, scale)
-- 3D ray casting for object picking
-- Drag-based object manipulation
+#### Core Features
+- Visual transform gizmos
+- 3D object picking
+- Drag-based manipulation
 - Numerical transform input
-- Transform constraints (axis locking)
+- Axis constraints
+- Snap functionality
+
+#### Success Criteria
+- Intuitive gizmo interaction
+- Precise object positioning
+- Smooth dragging performance
+- Working snap system
 
 ---
 
-## ⏳ Phase 4: Inspector Features
+### Phase 4: Advanced Inspector
+**Status**: ⏳ Planned
 
-### Objectives
-- Advanced property editing
-- Real-time updates
-- Enhanced UI/UX
-
-### Key Features
-- Editable transform fields
-- Color pickers for lights
+#### Core Features
+- Live property editing
+- Material property inspector
 - Advanced camera controls
-- Material property editing
-- Search and filtering in outliner
+- Light property editing
+- Search/filter in outliner
+- Property animation preview
+
+#### Success Criteria
+- Real-time property updates
+- Professional UI polish
+- Efficient property panels
+- Responsive editing
 
 ---
 
-## ⏳ Phase 5: Modular Architecture
+### Phase 5: Asset Pipeline
+**Status**: ⏳ Planned
 
-### Objectives
-- True modular separation
-- Plugin system foundation
-- Documentation and planning
+#### Core Features
+- Asset browser
+- Thumbnail generation
+- Drag & drop from browser
+- Multiple format support
+- Asset organization
+- Quick preview
 
-### Key Features
-- Separate RealityViewport module
-- Separate RealityInspector module
-- Clean module interfaces
-- Extension system architecture
-- Roadmap for future modules
+#### Success Criteria
+- Fast asset browsing
+- Reliable import pipeline
+- Good thumbnail quality
+- Intuitive organization
 
 ---
 
 ## 🚀 Future Modules
 
-### Planned RealityEditor Modules
-- **RealityAssets** - Asset browser and import pipeline
+### Short Term
 - **RealityScript** - Swift-based scripting system
 - **RealityPhysics** - Physics simulation and debugging
 - **RealityAnimation** - Timeline and keyframe animation
+
+### Medium Term
 - **RealityAudio** - Spatial audio tools
-- **RealityProject** - Project management and build system
-- **RealityRenderer** - Advanced rendering and shaders
-- **RealityTerrain** - Terrain and landscape tools
+- **RealityTerrain** - Terrain generation and editing
+- **RealityEffects** - Particle systems and VFX
 
-### Long-term Vision
-- **Year 1**: Complete core editor (Phases 1-5 + 3-4 additional modules)
-- **Year 2**: Advanced features (animation, physics, scripting)
-- **Year 3**: Platform expansion (visionOS optimization, AR tools)
-
----
-
-## 🛠️ Development Principles
-
-### Technical Standards
-- **Swift-first**: Native Swift throughout, no bridges
-- **RealityKit-native**: Leverage Apple's 3D framework fully
-- **Modular design**: Each feature as a separate, testable module
-- **Performance-focused**: Optimized for Apple Silicon
-- **SwiftUI-based**: Modern Apple UI patterns
-
-### Quality Metrics
-- **Code coverage**: >80% test coverage for core modules
-- **Performance**: 60fps viewport at all times
-- **Memory**: Efficient memory usage for large scenes
-- **Stability**: No crashes during normal workflow
+### Long Term
+- **RealityAR** - AR-specific tools and preview
+- **RealityNetwork** - Collaborative editing
+- **RealityBuild** - Export and optimization tools
 
 ---
 
-## 📈 Success Metrics by Phase
+## 🛠️ Technical Priorities
 
-### Phase 1 (Foundation)
-- Working 3D viewport with basic scene
-- Node system with 3 types implemented
-- Inspector showing properties
-- USDZ import working
+### Immediate Focus
+1. Complete model loading and rendering
+2. Fix camera controls
+3. Implement selection visualization
+4. Connect property editing
 
-### Phase 2 (Scene Management)
-- Can manage complex scenes with 50+ objects
-- Smooth multi-selection workflow
-- Save/load basic scene files
+### Architecture Goals
+- Maintain clean module separation
+- Keep RealityKit usage isolated
+- Design for testability
+- Optimize for Apple Silicon
 
-### Phase 3 (Transform System)
-- Interactive gizmo manipulation
-- Precise object positioning
-- Intuitive 3D interaction
-
-### Phase 4 (Inspector Features)
-- Real-time property editing
-- Professional-grade UI polish
-- Advanced camera/light controls
-
-### Phase 5 (Modular Architecture)
-- Clean module separation
-- Plugin system working
-- Documentation complete
+### Quality Standards
+- 60fps viewport performance
+- Smooth interaction feedback
+- Memory-efficient scene handling
+- No crashes during normal use
 
 ---
 
-## 🎯 Next Steps
+## 📈 Milestone Tracking
 
-### Immediate (Phase 2 Prep)
-1. Test current Phase 1 implementation
-2. Identify any Phase 1 bugs or polish needed
-3. Design Phase 2 features in detail
-4. Plan multi-selection system architecture
+### Next Milestone: Basic Editor
+- [ ] Import and display models
+- [ ] Working camera controls
+- [ ] Selection and highlighting
+- [ ] Property editing
+- [ ] Save/load scenes
 
-### Short-term (Next Month)
-- Complete Phases 2-3 (interactive scene editing)
-- Begin RealityAssets module planning
-- Establish testing framework
-
-### Medium-term (Next Quarter)
-- Complete Phases 4-5 (polish + modularity)
-- Begin RealityScript module
-- Alpha testing program
+### Following Milestone: Production Ready
+- [ ] Multi-selection
+- [ ] Transform gizmos
+- [ ] Undo/redo system
+- [ ] Asset browser
+- [ ] Performance optimization
 
 ---
 
-*Last updated: Phase 1 completion*  
-*Next milestone: Phase 2 kickoff*
+## 🎯 Immediate Next Steps
+
+### Quick Fixes (Before Phase 2)
+1. **Camera Controls**
+   - Add pan gesture support
+   - Refine zoom sensitivity
+   - Implement reset camera function
+
+2. **Property Binding**
+   - Connect transform fields to node values
+   - Add value validation
+   - Implement live updates
+
+3. **Frame Operations**
+   - Wire up "Frame All" button
+   - Wire up "Frame Selected" button
+   - Add keyboard shortcuts
+
+### Phase 2 Implementation Plan
+1. Create SelectionManager class
+2. Update OutlinerView for multi-selection
+3. Implement node operations (duplicate, group)
+4. Add scene file format (.reality)
+5. Create keyboard shortcut system
+
+---
+
+## 🛠️ Technical Details
+
+### Current Stack
+- **Platform**: macOS 16+ (originally iOS, now desktop)
+- **IDE**: Xcode 16
+- **Frameworks**: SwiftUI, RealityKit, SwiftData
+- **Architecture**: MVVM with ObservableObject
+
+### Code Structure
+```
+RealityEditor/
+├── App/
+│   ├── ContentView.swift
+│   └── RealityEditorApp.swift
+├── Core/
+│   ├── Nodes/
+│   │   ├── SceneNode.swift
+│   │   ├── BaseSceneNode.swift
+│   │   ├── CameraNode.swift
+│   │   ├── LightNode.swift
+│   │   └── ModelNode.swift
+│   └── Managers/
+│       └── SceneManager.swift
+├── RealityViewport/
+│   ├── ViewportView.swift
+│   └── CameraController.swift
+└── RealityInspector/
+    ├── InspectorView.swift
+    ├── OutlinerView.swift
+    └── PropertiesView.swift
+```
+
+---
+
+*Last updated: Phase 1 complete, ViewportView rendering fixed*  
+*Next milestone: Camera control polish & Phase 2 start*

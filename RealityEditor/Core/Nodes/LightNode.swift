@@ -38,17 +38,17 @@ class LightNode: BaseSceneNode {
     }
     
     // Create RealityKit light entity
-    func createRealityKitLight() -> (any Light)? {
+    func createRealityKitLight() -> Entity? {
         switch lightType {
         case .directional:
             let light = DirectionalLight()
             light.light.intensity = intensity
-            light.light.color = .init(red: color.x, green: color.y, blue: color.z, alpha: 1.0)
+            light.light.color = .init(red: CGFloat(color.x), green: CGFloat(color.y), blue: CGFloat(color.z), alpha: 1.0)
             return light
         case .point:
             let light = PointLight()
             light.light.intensity = intensity
-            light.light.color = .init(red: color.x, green: color.y, blue: color.z, alpha: 1.0)
+            light.light.color = .init(red: CGFloat(color.x), green: CGFloat(color.y), blue: CGFloat(color.z), alpha: 1.0)
             light.light.attenuationRadius = range
             return light
         }
