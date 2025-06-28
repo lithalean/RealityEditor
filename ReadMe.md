@@ -20,67 +20,82 @@ Starting with core scene editing functionality, then gradually adding Godot-insp
 - macOS project with SwiftUI + RealityKit (Xcode 16, macOS 16)
 - Modular folder organization (Core, RealityViewport, RealityInspector, App)
 - Basic SwiftData integration
+- HSplitView for proper macOS panel layout
 
 **Node System** 
 - SceneNode protocol with transform properties
 - BaseSceneNode implementation
 - Node types: Camera, Light, Model
 - Complete transform system (position, rotation, scale)
+- Model loading from USDZ files with auto-scaling
 
-**Viewport**
-- RealityView integration with modern API
-- 3D grid with colored axes (X=red, Y=green, Z=blue)
-- Camera controller with orbit controls
-- Grid rendering system
-- Model entity rendering
-- Light entity creation and rendering
-- Selection highlighting system
+**Viewport** ✨
+- RealityView with PerspectiveCamera entity
+- Proper 3D perspective rendering
+- 3D grid with thin cylinder lines
+- Colored axes (X=red, Y=green, Z=blue)
+- Camera controller with working orbit controls
+- Model entity rendering with cloning
+- Light entity creation (Directional, Point)
+- Selection highlighting (blue tint)
+- Ambient lighting for visibility
 
 **Inspector**
-- InspectorView container
+- InspectorView with proper macOS styling
 - OutlinerView for scene hierarchy
 - PropertiesView for node properties
-- Node selection system
+- Working inspector toggle button
+- Node selection system with visual feedback
 
 **Scene Management**
-- SceneManager with node collection
+- SceneManager with observable node collection
 - Default scene setup (Camera + Light at Blender positions)
-- Active camera tracking
-- Node addition/removal
-- Model import functionality
+- Active camera tracking and switching
+- Node addition/removal with selection handling
+- Async model import functionality
 
-### 🚧 In Progress
+### 🔧 Issues Fixed
+- ✅ 3D perspective now working (added PerspectiveCamera entity)
+- ✅ Grid rendering fixed (cylinders instead of boxes)
+- ✅ Inspector toggle working (HSplitView + proper button)
+- ✅ macOS color handling (NSColor instead of UIColor)
+- ✅ Proper entity management in update loop
 
-- Camera zoom/pan controls (orbit works)
-- Property editing binding
-- Frame all/selected implementation
-- 3D object picking in viewport
-- Camera sync improvements
+### 🚧 Remaining Polish
+
+- Camera zoom sensitivity adjustment
+- Pan controls implementation
+- Property editing two-way binding
+- 3D picking for viewport selection
+- Frame all/selected button functionality
 
 ---
 
 ## 📋 Development Phases
 
 ### Phase 1: Foundation
-**Status**: ✅ **COMPLETED**
+**Status**: ✅ **COMPLETED** 🎉
 
 #### Completed Features
 - ✅ Project structure with modular architecture
 - ✅ Complete node system (Camera, Light, Model)
-- ✅ RealityViewport with grid and axes
+- ✅ 3D RealityViewport with proper perspective
+- ✅ Grid rendering with thin lines and colored axes
 - ✅ Model loading and rendering pipeline
-- ✅ Light rendering system
-- ✅ Basic camera orbit controls
-- ✅ Selection highlighting
-- ✅ Inspector UI with outliner and properties
-- ✅ USDZ import functionality
-- ✅ Default scene setup matching Blender
+- ✅ Light entity rendering (Point, Directional)
+- ✅ Camera orbit controls with gestures
+- ✅ Selection highlighting with blue tint
+- ✅ Inspector UI with working toggle
+- ✅ USDZ import with file picker
+- ✅ Scene hierarchy in outliner
+- ✅ Property display panels
 
-#### Known Issues to Address
-- Camera zoom needs gesture refinement
-- Pan controls not yet implemented
-- Property fields need two-way binding
-- 3D picking for viewport selection
+#### Technical Achievements
+- Proper PerspectiveCamera entity in RealityView
+- Efficient entity cloning for updates
+- Clean separation of grid/scene entities
+- Cross-platform color handling (macOS/iOS)
+- Modern RealityKit API usage
 
 ---
 
@@ -222,21 +237,49 @@ Starting with core scene editing functionality, then gradually adding Godot-insp
 
 ## 🎯 Immediate Next Steps
 
-### Quick Fixes (Before Phase 2)
-1. **Camera Controls**
-   - Add pan gesture support
-   - Refine zoom sensitivity
-   - Implement reset camera function
+### Quick Polish (Before Phase 2)
+1. **Camera Enhancements**
+   - Add pan gesture (Option+drag or right-click drag)
+   - Fine-tune zoom sensitivity
+   - Wire up Frame All/Selected buttons
+   - Add reset camera function
 
-2. **Property Binding**
-   - Connect transform fields to node values
-   - Add value validation
-   - Implement live updates
+2. **Property Editing**
+   - Implement two-way binding for transform fields
+   - Add numeric input validation
+   - Enable real-time updates
+   - Format numbers properly (2 decimal places)
 
-3. **Frame Operations**
-   - Wire up "Frame All" button
-   - Wire up "Frame Selected" button
-   - Add keyboard shortcuts
+3. **Keyboard Shortcuts**
+   - F - Frame selected
+   - A - Frame all
+   - Delete - Remove selected node
+   - Cmd+D - Duplicate node
+   - Cmd+I - Import model
+
+### Code Snippets for Quick Wins
+
+**Pan Gesture Addition:**
+```swift
+// Add to cameraControlGestures()
+let pan = DragGesture(minimumDistance: 0)
+    .modifiers(.option)
+    .onChanged { value in
+        let dx = Float(value.translation.width) * 0.002
+        let dy = Float(value.translation.height) * 0.002
+        cameraController.panCamera(camera, deltaX: dx, deltaY: dy)
+    }
+```
+
+**Frame Operations:**
+```swift
+// In ContentView toolbar
+Button("Frame All") {
+    if let camera = sceneManager.activeCamera {
+        cameraController.frameAllNodes(camera, nodes: sceneManager.nodes)
+    }
+}
+```
 
 ### Phase 2 Implementation Plan
 1. Create SelectionManager class
@@ -281,5 +324,5 @@ RealityEditor/
 
 ---
 
-*Last updated: Phase 1 complete, ViewportView rendering fixed*  
-*Next milestone: Camera control polish & Phase 2 start*
+*Last updated: Phase 1 COMPLETE! 3D rendering working perfectly*  
+*Next milestone: Polish camera controls, then Phase 2 multi-selection*
