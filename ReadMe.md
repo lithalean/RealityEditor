@@ -1,328 +1,110 @@
-# RealityEditor Project Roadmap
+# 🛠️ RealityEditor
 
-> **Goal**: Build a Godot-inspired 3D scene editor optimized for Apple's ecosystem using RealityKit and Darwin ARM64.
+*Modern Apple Silicon Game Engine — ARM64 ONLY*
 
----
-
-## 🎯 Project Vision
-
-**RealityEditor** = RealityViewport + RealityInspector + Future Modules
-
-Starting with core scene editing functionality, then gradually adding Godot-inspired features as modular Apple-native components.
+![Platform Support](https://img.shields.io/badge/platform-Apple%20Silicon%20ONLY-blue)
+![Architecture](https://img.shields.io/badge/arch-ARM64%20ONLY-green)
+![Swift Version](https://img.shields.io/badge/swift-6.0%2B-orange)
+![Editor Phase](https://img.shields.io/badge/Phase%202-In%20Progress-yellow)
+![No Intel](https://img.shields.io/badge/Intel%20Support-NONE-red)
 
 ---
 
-## 📊 Current Project Status
+## 🧠 Modern Game Engine for Modern Apple Hardware
 
-### ✅ Implemented Features
+**RealityEditor** is a native 3D engine editor built exclusively with **Xcode 26**, targeting **RealityKit**, **Swift 6**, and **Metal**. It is optimized for **Apple Silicon ARM64** and requires the latest operating systems currently in beta:
 
-**Project Structure**
-- macOS project with SwiftUI + RealityKit (Xcode 16, macOS 16)
-- Modular folder organization (Core, RealityViewport, RealityInspector, App)
-- Basic SwiftData integration
-- HSplitView for proper macOS panel layout
+> 🔒 **Minimum Requirements**  
+> - macOS 26  
+> - iOS 26  
+> - iPadOS 26  
+> - tvOS 26  
+> - Xcode 26  
+> - Swift 6
 
-**Node System** 
-- SceneNode protocol with transform properties
-- BaseSceneNode implementation
-- Node types: Camera, Light, Model
-- Complete transform system (position, rotation, scale)
-- Model loading from USDZ files with auto-scaling
+**This is intentional.** RealityEditor leverages many new frameworks, APIs, and Swift language features that are **only available in the current 2025 OS cycle**.
 
-**Viewport** ✨
-- RealityView with PerspectiveCamera entity
-- Proper 3D perspective rendering
-- 3D grid with thin cylinder lines
-- Colored axes (X=red, Y=green, Z=blue)
-- Camera controller with working orbit controls
-- Model entity rendering with cloning
-- Light entity creation (Directional, Point)
-- Selection highlighting (blue tint)
-- Ambient lighting for visibility
-
-**Inspector**
-- InspectorView with proper macOS styling
-- OutlinerView for scene hierarchy
-- PropertiesView for node properties
-- Working inspector toggle button
-- Node selection system with visual feedback
-
-**Scene Management**
-- SceneManager with observable node collection
-- Default scene setup (Camera + Light at Blender positions)
-- Active camera tracking and switching
-- Node addition/removal with selection handling
-- Async model import functionality
-
-### 🔧 Issues Fixed
-- ✅ 3D perspective now working (added PerspectiveCamera entity)
-- ✅ Grid rendering fixed (cylinders instead of boxes)
-- ✅ Inspector toggle working (HSplitView + proper button)
-- ✅ macOS color handling (NSColor instead of UIColor)
-- ✅ Proper entity management in update loop
-
-### 🚧 Remaining Polish
-
-- Camera zoom sensitivity adjustment
-- Pan controls implementation
-- Property editing two-way binding
-- 3D picking for viewport selection
-- Frame all/selected button functionality
+> 🚫 No cross-platform hacks  
+> 🚫 No C# runtimes  
+> 🚫 No Intel binaries  
+> 🔒 100% closed-source (for now)
 
 ---
 
-## 📋 Development Phases
+## 📐 Editor Breakdown
 
-### Phase 1: Foundation
-**Status**: ✅ **COMPLETED** 🎉
-
-#### Completed Features
-- ✅ Project structure with modular architecture
-- ✅ Complete node system (Camera, Light, Model)
-- ✅ 3D RealityViewport with proper perspective
-- ✅ Grid rendering with thin lines and colored axes
-- ✅ Model loading and rendering pipeline
-- ✅ Light entity rendering (Point, Directional)
-- ✅ Camera orbit controls with gestures
-- ✅ Selection highlighting with blue tint
-- ✅ Inspector UI with working toggle
-- ✅ USDZ import with file picker
-- ✅ Scene hierarchy in outliner
-- ✅ Property display panels
-
-#### Technical Achievements
-- Proper PerspectiveCamera entity in RealityView
-- Efficient entity cloning for updates
-- Clean separation of grid/scene entities
-- Cross-platform color handling (macOS/iOS)
-- Modern RealityKit API usage
+| Module                | Description |
+|----------------------|-------------|
+| `RealityViewport`     | SwiftUI + RealityKit scene renderer (grid, camera, axis, gizmos) |
+| `RealityInspector`    | Node outliner, property editor, selection handling |
+| `RealityFileSystem`   | USDZ/Reality file import and internal asset tracking |
+| `Core/Nodes`          | Protocol-driven scene node types (Model, Light, Camera) |
+| `Core/Managers`       | Runtime logic: scene updates, selection, transform sync |
+| `Views/Mac`, `Views/iPhone` | Platform-specific layout logic for desktop and mobile (iPad & tvOS planned) |
 
 ---
 
-### Phase 2: Scene Management
-**Status**: ⏳ Ready to Start
+## ✅ Implemented Features
 
-#### Core Features
-- Multi-selection system
-- Node duplication
-- Advanced deletion (with children)
-- Parent/unparent operations
-- Focus/frame operations
-- Basic scene persistence
-
-#### Success Criteria
-- Can select multiple nodes
-- Can duplicate nodes with offset
-- Can save/load scenes
-- Frame selected works properly
-- Smooth performance with 50+ nodes
+- ✅ Modular scene graph with `SceneNode` protocol
+- ✅ SwiftUI `RealityView` 3D rendering
+- ✅ Orbit, pan, zoom controls (Blender-style)
+- ✅ Selection outlines, glow, and gizmo overlays
+- ✅ USDZ + Reality file import (async, sandbox-safe)
+- ✅ Multi-platform layout (macOS full; iOS basic)
 
 ---
 
-### Phase 3: Transform Tools
-**Status**: ⏳ Planned
+## 🚧 In Progress (Phase 2)
 
-#### Core Features
-- Visual transform gizmos
-- 3D object picking
-- Drag-based manipulation
-- Numerical transform input
-- Axis constraints
-- Snap functionality
-
-#### Success Criteria
-- Intuitive gizmo interaction
-- Precise object positioning
-- Smooth dragging performance
-- Working snap system
-
----
-
-### Phase 4: Advanced Inspector
-**Status**: ⏳ Planned
-
-#### Core Features
-- Live property editing
-- Material property inspector
-- Advanced camera controls
-- Light property editing
-- Search/filter in outliner
-- Property animation preview
-
-#### Success Criteria
-- Real-time property updates
-- Professional UI polish
-- Efficient property panels
-- Responsive editing
-
----
-
-### Phase 5: Asset Pipeline
-**Status**: ⏳ Planned
-
-#### Core Features
-- Asset browser
-- Thumbnail generation
-- Drag & drop from browser
-- Multiple format support
-- Asset organization
-- Quick preview
-
-#### Success Criteria
-- Fast asset browsing
-- Reliable import pipeline
-- Good thumbnail quality
-- Intuitive organization
-
----
-
-## 🚀 Future Modules
-
-### Short Term
-- **RealityScript** - Swift-based scripting system
-- **RealityPhysics** - Physics simulation and debugging
-- **RealityAnimation** - Timeline and keyframe animation
-
-### Medium Term
-- **RealityAudio** - Spatial audio tools
-- **RealityTerrain** - Terrain generation and editing
-- **RealityEffects** - Particle systems and VFX
-
-### Long Term
-- **RealityAR** - AR-specific tools and preview
-- **RealityNetwork** - Collaborative editing
-- **RealityBuild** - Export and optimization tools
-
----
-
-## 🛠️ Technical Priorities
-
-### Immediate Focus
-1. Complete model loading and rendering
-2. Fix camera controls
-3. Implement selection visualization
-4. Connect property editing
-
-### Architecture Goals
-- Maintain clean module separation
-- Keep RealityKit usage isolated
-- Design for testability
-- Optimize for Apple Silicon
-
-### Quality Standards
-- 60fps viewport performance
-- Smooth interaction feedback
-- Memory-efficient scene handling
-- No crashes during normal use
-
----
-
-## 📈 Milestone Tracking
-
-### Next Milestone: Basic Editor
-- [ ] Import and display models
-- [ ] Working camera controls
-- [ ] Selection and highlighting
-- [ ] Property editing
-- [ ] Save/load scenes
-
-### Following Milestone: Production Ready
-- [ ] Multi-selection
-- [ ] Transform gizmos
+- [x] Core camera + node selection system
+- [ ] Node duplication & multi-selection
+- [ ] Scene save/load file format (`.realityscene`)
 - [ ] Undo/redo system
-- [ ] Asset browser
-- [ ] Performance optimization
+- [ ] Live property editing via SwiftData
+- [ ] Inspector panel enhancements
 
 ---
 
-## 🎯 Immediate Next Steps
+## 🧱 Future Modularization
 
-### Quick Polish (Before Phase 2)
-1. **Camera Enhancements**
-   - Add pan gesture (Option+drag or right-click drag)
-   - Fine-tune zoom sensitivity
-   - Wire up Frame All/Selected buttons
-   - Add reset camera function
+Once RealityEditor is more mature, it will be broken down into standalone, **closed-source** Apple-native frameworks:
 
-2. **Property Editing**
-   - Implement two-way binding for transform fields
-   - Add numeric input validation
-   - Enable real-time updates
-   - Format numbers properly (2 decimal places)
+- `RealityViewport.xcframework` — 3D view, grid, camera, lighting
+- `RealityInspector.xcframework` — Outliner, properties panel, selection UI
+- `RealityFileSystem.xcframework` — File import, asset sandboxing
 
-3. **Keyboard Shortcuts**
-   - F - Frame selected
-   - A - Frame all
-   - Delete - Remove selected node
-   - Cmd+D - Duplicate node
-   - Cmd+I - Import model
-
-### Code Snippets for Quick Wins
-
-**Pan Gesture Addition:**
-```swift
-// Add to cameraControlGestures()
-let pan = DragGesture(minimumDistance: 0)
-    .modifiers(.option)
-    .onChanged { value in
-        let dx = Float(value.translation.width) * 0.002
-        let dy = Float(value.translation.height) * 0.002
-        cameraController.panCamera(camera, deltaX: dx, deltaY: dy)
-    }
-```
-
-**Frame Operations:**
-```swift
-// In ContentView toolbar
-Button("Frame All") {
-    if let camera = sceneManager.activeCamera {
-        cameraController.frameAllNodes(camera, nodes: sceneManager.nodes)
-    }
-}
-```
-
-### Phase 2 Implementation Plan
-1. Create SelectionManager class
-2. Update OutlinerView for multi-selection
-3. Implement node operations (duplicate, group)
-4. Add scene file format (.reality)
-5. Create keyboard shortcut system
+These components will power **Orchard**, a Swift+C++ runtime engine for Apple platforms.
 
 ---
 
-## 🛠️ Technical Details
+## 🔐 Licensing & Distribution
 
-### Current Stack
-- **Platform**: macOS 16+ (originally iOS, now desktop)
-- **IDE**: Xcode 16
-- **Frameworks**: SwiftUI, RealityKit, SwiftData
-- **Architecture**: MVVM with ObservableObject
-
-### Code Structure
-```
-RealityEditor/
-├── App/
-│   ├── ContentView.swift
-│   └── RealityEditorApp.swift
-├── Core/
-│   ├── Nodes/
-│   │   ├── SceneNode.swift
-│   │   ├── BaseSceneNode.swift
-│   │   ├── CameraNode.swift
-│   │   ├── LightNode.swift
-│   │   └── ModelNode.swift
-│   └── Managers/
-│       └── SceneManager.swift
-├── RealityViewport/
-│   ├── ViewportView.swift
-│   └── CameraController.swift
-└── RealityInspector/
-    ├── InspectorView.swift
-    ├── OutlinerView.swift
-    └── PropertiesView.swift
-```
+- Orchard and RealityEditor are **private** and will remain **closed source**
+- This repository contains **public documentation only**
+- Future `.xcframework` binaries may be released to assist others building native tools — once **IP protection** is in place
+- No source code will be published
 
 ---
 
-*Last updated: Phase 1 COMPLETE! 3D rendering working perfectly*  
-*Next milestone: Polish camera controls, then Phase 2 multi-selection*
+## ⚠️ Important Notes
+
+- This project **requires Xcode 26 and OS versions currently in beta**
+- Do not attempt to build unless you have **developer access to macOS 26+ / iOS 26+**
+- Some APIs in use are **exclusive to 2025 platform releases**
+
+> RealityEditor is forward-looking by design. It's not built for legacy compatibility — it’s built for what’s next.
+
+---
+
+## 📚 Philosophy: Teach by Blueprint, Not by Source
+
+- Learn how a native SwiftUI+RealityKit editor is architected
+- Get inspired by modular structure
+- Build your own tools, from scratch, with confidence
+
+> Questions?  
+> Tag `@Lithalean` on GitHub.  
+> Public `#darwin-dev` community server coming soon.
+
+---
