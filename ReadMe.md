@@ -1,110 +1,102 @@
 # 🛠️ RealityEditor
 
-*Modern Apple Silicon Game Engine — ARM64 ONLY*
+*Next-Generation 3D Scene Editor for Apple Silicon*
 
-![Platform Support](https://img.shields.io/badge/platform-Apple%20Silicon%20ONLY-blue)
+![Platform](https://img.shields.io/badge/platform-macOS%2026%2B-blue)
 ![Architecture](https://img.shields.io/badge/arch-ARM64%20ONLY-green)
 ![Swift Version](https://img.shields.io/badge/swift-6.0%2B-orange)
-![Editor Phase](https://img.shields.io/badge/Phase%202-In%20Progress-yellow)
-![No Intel](https://img.shields.io/badge/Intel%20Support-NONE-red)
+![Xcode](https://img.shields.io/badge/Xcode-26%2B-red)
+![Intel Support](https://img.shields.io/badge/Intel%20Support-NONE-black)
 
 ---
 
-## 🧠 Modern Game Engine for Modern Apple Hardware
+## 🚀 Built for the Future
 
-**RealityEditor** is a native 3D engine editor built exclusively with **Xcode 26**, targeting **RealityKit**, **Swift 6**, and **Metal**. It is optimized for **Apple Silicon ARM64** and requires the latest operating systems currently in beta:
+**RealityEditor** is a cutting-edge 3D scene editor that leverages the absolute latest Apple technologies. This is not a compatibility project.
 
-> 🔒 **Minimum Requirements**  
-> - macOS 26  
-> - iOS 26  
-> - iPadOS 26  
-> - tvOS 26  
-> - Xcode 26  
-> - Swift 6
+> ⚡ **Minimum Requirements**  
+> - **macOS 26** (required)  
+> - **iOS 26** (required)  
+> - **Xcode 26** (required)  
+> - **Apple Silicon** (M1/M2/M3/M4 only)  
+> - **Swift 6** language features
 
-**This is intentional.** RealityEditor leverages many new frameworks, APIs, and Swift language features that are **only available in the current 2025 OS cycle**.
-
-> 🚫 No cross-platform hacks  
-> 🚫 No C# runtimes  
-> 🚫 No Intel binaries  
-> 🔒 100% closed-source (for now)
+> - ❌ NO Intel support (ever)  
+> - ❌ NO backward compatibility  
+> - ❌ NO cross-platform considerations  
+> - ❌ NO legacy API usage
 
 ---
 
-## 📐 Editor Breakdown
+## 🎯 Why These Requirements?
 
-| Module                | Description |
-|----------------------|-------------|
-| `RealityViewport`     | SwiftUI + RealityKit scene renderer (grid, camera, axis, gizmos) |
-| `RealityInspector`    | Node outliner, property editor, selection handling |
-| `RealityFileSystem`   | USDZ/Reality file import and internal asset tracking |
-| `Core/Nodes`          | Protocol-driven scene node types (Model, Light, Camera) |
-| `Core/Managers`       | Runtime logic: scene updates, selection, transform sync |
-| `Views/Mac`, `Views/iPhone` | Platform-specific layout logic for desktop and mobile (iPad & tvOS planned) |
+This project uses APIs and frameworks that **only exist** in the 2025+ Apple ecosystem:
+- Latest RealityKit rendering pipeline
+- Swift 6 concurrency features
+- Modern SwiftUI layout system
+- Apple Silicon-exclusive Metal features
+- New file coordination APIs
 
 ---
 
-## ✅ Implemented Features
+## 📊 Current Status
 
-- ✅ Modular scene graph with `SceneNode` protocol
-- ✅ SwiftUI `RealityView` 3D rendering
-- ✅ Orbit, pan, zoom controls (Blender-style)
-- ✅ Selection outlines, glow, and gizmo overlays
-- ✅ USDZ + Reality file import (async, sandbox-safe)
-- ✅ Multi-platform layout (macOS full; iOS basic)
+### Phase 1: Foundation ✅
+- Modern RealityKit viewport with persistent entities
+- Advanced selection system with visual feedback
+- Transform gizmos (translate, rotate, scale)
+- Multi-platform architecture (macOS/iOS)
 
----
-
-## 🚧 In Progress (Phase 2)
-
-- [x] Core camera + node selection system
-- [ ] Node duplication & multi-selection
-- [ ] Scene save/load file format (`.realityscene`)
-- [ ] Undo/redo system
-- [ ] Live property editing via SwiftData
-- [ ] Inspector panel enhancements
+### Phase 2: Scene Management 🚧
+- Multi-selection with modern gestures
+- Scene graph persistence
+- Undo/redo with Swift 6 features
+- Advanced node relationships
+- iPhone adaptive inspector panel ✅
+- Resizable inspector on both platforms ✅
+- Unified icon-only toolbar (Mac + iOS) ✅
 
 ---
 
-## 🧱 Future Modularization
+## 🏗️ Architecture
 
-Once RealityEditor is more mature, it will be broken down into standalone, **closed-source** Apple-native frameworks:
 
-- `RealityViewport.xcframework` — 3D view, grid, camera, lighting
-- `RealityInspector.xcframework` — Outliner, properties panel, selection UI
-- `RealityFileSystem.xcframework` — File import, asset sandboxing
-
-These components will power **Orchard**, a Swift+C++ runtime engine for Apple platforms.
-
----
-
-## 🔐 Licensing & Distribution
-
-- Orchard and RealityEditor are **private** and will remain **closed source**
-- This repository contains **public documentation only**
-- Future `.xcframework` binaries may be released to assist others building native tools — once **IP protection** is in place
-- No source code will be published
+```
+RealityEditor/
+├── Core/                   # Pure Swift 6 business logic
+│   ├── Nodes/             # Actor-based scene graph
+│   ├── Managers/          # @Observable state management
+│   └── Components/        # Modular tools
+├── RealityViewport/       # Next-gen RealityKit rendering
+├── RealityInspector/      # SwiftUI 5.0 property system
+└── Views/                 # Platform-adaptive layouts
+    ├── Mac/               # macOS 26 specific
+    └── iPhone/            # iOS 26 specific
+```
 
 ---
 
-## ⚠️ Important Notes
+## 💻 Development Requirements
 
-- This project **requires Xcode 26 and OS versions currently in beta**
-- Do not attempt to build unless you have **developer access to macOS 26+ / iOS 26+**
-- Some APIs in use are **exclusive to 2025 platform releases**
+### You MUST Have:
+- **Mac with Apple Silicon** (M1 minimum, M3 recommended)
+- **macOS 26** Developer Beta or later
+- **Xcode 26** Developer Beta or later
+- **Active Apple Developer account** (for beta access)
 
-> RealityEditor is forward-looking by design. It's not built for legacy compatibility — it’s built for what’s next.
-
----
-
-## 📚 Philosophy: Teach by Blueprint, Not by Source
-
-- Learn how a native SwiftUI+RealityKit editor is architected
-- Get inspired by modular structure
-- Build your own tools, from scratch, with confidence
-
-> Questions?  
-> Tag `@Lithalean` on GitHub.  
-> Public `#darwin-dev` community server coming soon.
+### You CANNOT Use:
+- Intel Macs (will not compile)
+- macOS 25 or earlier (missing APIs)
+- Xcode 25 or earlier (missing Swift 6)
+- Rosetta 2 (explicitly disabled)
 
 ---
+
+## 🚧 Current Development Focus
+
+Working on features that are only possible with 2025+ APIs:
+- Entity persistence with new RealityKit features
+- Swift 6 actor-based scene graph
+- Metal 4 rendering optimizations
+- SwiftData integration for project files
+- iPhone-specific UI improvements (sliding inspector, grey theming)
