@@ -1,3 +1,4 @@
+lithalean@Tylers-Mac-mini RealityEditor % tree
 .
 ├── RealityEditor
 │   ├── App
@@ -11,6 +12,7 @@
 │   │   └── Contents.json
 │   ├── Core
 │   │   ├── Components
+│   │   │   ├── BillboardComponent.swift
 │   │   │   ├── EditorComponents.swift
 │   │   │   └── TransformGizmo.swift
 │   │   ├── Extensions
@@ -26,6 +28,8 @@
 │   │   │   ├── LightNode.swift
 │   │   │   ├── ModelNode.swift
 │   │   │   └── SceneNode.swift
+│   │   ├── Systems
+│   │   │   └── BillboardSystem.swift
 │   │   └── Utilities
 │   │       ├── GridHelper.swift
 │   │       └── SceneStatistics.swift
@@ -41,10 +45,15 @@
 │   │   └── PropertiesView.swift
 │   ├── RealityViewport
 │   │   ├── CameraController.swift
+│   │   ├── ViewportAxisHelper.swift
+│   │   ├── ViewportEntityFactory.swift
+│   │   ├── ViewportGrid.swift
+│   │   ├── ViewportIconFactory.swift
+│   │   ├── ViewportState.swift
 │   │   ├── ViewportToolbar.swift
 │   │   └── ViewportView.swift
 │   ├── Shared
-│   │   └── Components
+│   │   └── PlatformColor.swift
 │   └── Views
 │       ├── iPhone
 │       │   └── iPhoneView.swift
@@ -65,4 +74,4 @@
             └── xcschemes
                 └── xcschememanagement.plist
 
-31 directories, 35 files
+31 directories, 43 files
